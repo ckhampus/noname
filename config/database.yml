@@ -1,0 +1,11 @@
+development:
+  driver:   pdo_mysql
+  host:     localhost
+  dbname:   blog_development
+  user:     root
+  password: password
+
+test:
+  driver: pdo_sqlite
+  memory: true
+

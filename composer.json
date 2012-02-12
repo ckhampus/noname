@@ -1,0 +1,15 @@
+{
+  "require": {
+    "silex/silex": "1.0.*",
+    "doctrine/orm": "2.2.*",
+    "gedmo/doctrine-extensions": "2.2.*",
+    "symfony/yaml": "2.1.*",
+    "symfony/finder": "2.1.*"
+  },
+  "autoload": {
+    "psr-0": { 
+      "Blog": "src/",
+      "Doctrine\\Tests": "vendor/doctrine/orm/tests/" 
+    }
+  }
+}
