@@ -1,0 +1,37 @@
+{
+    "hash": "2a6010fc508d083d235d7877ad840158",
+    "packages": [
+        {
+            "package": "twig\/twig",
+            "version": "1.7.0-dev"
+        },
+        {
+            "package": "doctrine\/common",
+            "version": "2.2.0"
+        },
+        {
+            "package": "doctrine\/dbal",
+            "version": "2.2.1"
+        },
+        {
+            "package": "pimple\/pimple",
+            "version": "1.0.0-dev"
+        },
+        {
+            "package": "symfony\/symfony",
+            "version": "2.1.0-dev"
+        },
+        {
+            "package": "gedmo\/doctrine-extensions",
+            "version": "v2.2.0"
+        },
+        {
+            "package": "doctrine\/orm",
+            "version": "2.2.0"
+        },
+        {
+            "package": "silex\/silex",
+            "version": "1.0.0-dev"
+        }
+    ]
+}

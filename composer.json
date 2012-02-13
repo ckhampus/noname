@@ -2,11 +2,11 @@
   "name": "noname",
   "verison": "0.0.1",
   "require": {
-    "symfony/yaml": "2.1.*",
-    "symfony/finder": "2.1.*",
-    "silex/silex": "1.0.*",
-    "doctrine/orm": "2.2.*",
-    "gedmo/doctrine-extensions": "2.2.*"
+    "silex/silex": "1.0.0-dev",
+    "symfony/yaml": "2.1.0-dev",
+    "symfony/finder": "2.1.0-dev",
+    "doctrine/orm": "2.2.0",
+    "gedmo/doctrine-extensions": "2.2.0"
   },
   "autoload": {
     "psr-0": { 
