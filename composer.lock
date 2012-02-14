@@ -1,6 +1,14 @@
 {
-    "hash": "74c787b19d722f463735c20effa2d433",
+    "hash": "64a3cd04ef7817c874eefe5b76c7faca",
     "packages": [
+        {
+            "package": "symfony\/locale",
+            "version": "2.1.0-dev"
+        },
+        {
+            "package": "symfony\/validator",
+            "version": "2.1.0-dev"
+        },
         {
             "package": "symfony\/class-loader",
             "version": "2.1.0-dev"
@@ -38,6 +46,22 @@
             "version": "2.1.0-dev"
         },
         {
+            "package": "symfony\/form",
+            "version": "2.1.0-dev"
+        },
+        {
+            "package": "symfony\/translation",
+            "version": "2.1.0-dev"
+        },
+        {
+            "package": "symfony\/twig-bridge",
+            "version": "2.1.0-dev"
+        },
+        {
+            "package": "symfony\/doctrine-bridge",
+            "version": "2.1.0-dev"
+        },
+        {
             "package": "symfony\/browser-kit",
             "version": "2.1.0-dev"
         },
@@ -62,32 +86,12 @@
             "version": "2.2.0"
         },
         {
-            "package": "silex\/silex",
-            "version": "1.0.0-dev"
-        },
-        {
-            "package": "symfony\/locale",
-            "version": "2.1.0-dev"
-        },
-        {
-            "package": "symfony\/validator",
-            "version": "2.1.0-dev"
-        },
-        {
-            "package": "symfony\/form",
-            "version": "2.1.0-dev"
-        },
-        {
-            "package": "symfony\/twig-bridge",
-            "version": "2.1.0-dev"
-        },
-        {
-            "package": "symfony\/doctrine-bridge",
-            "version": "2.1.0-dev"
-        },
-        {
             "package": "twig\/twig",
             "version": "1.6.0"
+        },
+        {
+            "package": "silex\/silex",
+            "version": "1.0.0-dev"
         }
     ]
 }

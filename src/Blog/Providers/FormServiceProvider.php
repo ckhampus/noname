@@ -38,11 +38,11 @@ class FormServiceProvider implements ServiceProviderInterface
                 new CsrfExtension($app['form.csrf_provider']),
             );
 
+            
             if (isset($app['db'])) {
-                new \Blog\Registry($app['db'], $app['db.entity_manager']);
-
-                //$registry = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($app['db.entity_manager']);
+                $registry = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension(new \Blog\Registry($app['db'], $app['db.entity_manager']));
             }
+
 
             if (isset($app['validator'])) {
                 $extensions[] = new ValidatorExtension($app['validator']);

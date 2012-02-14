@@ -12,7 +12,9 @@ use Symfony\Component\Yaml\Yaml,
     Symfony\Component\Finder\Finder;
 
 use Silex\Provider\SymfonyBridgesServiceProvider,
-    Silex\Provider\TranslationServiceProvider;
+    Silex\Provider\TranslationServiceProvider,
+    Silex\Provider\TwigServiceProvider,
+    Silex\Provider\UrlGeneratorServiceProvider;
 
 class Application extends \Silex\Application
 {
@@ -46,6 +48,12 @@ class Application extends \Silex\Application
             'db.options' => $db_options,
             'db.entities' => array(APP_DIR.'/Blog/Entities'),
         ));
+
+        $app->register(new TwigServiceProvider(), array(
+            'twig.path' => ROOT_DIR.'/admin/views',
+        ));
+
+        $app->register(new UrlGeneratorServiceProvider());
 
         $this->register(new SymfonyBridgesServiceProvider());
 

@@ -20,7 +20,7 @@ class BlogControllerProvider implements ControllerProviderInterface
             return 'Archive';
         });
 
-        $controllers->get('/{id}/{slug}', function (Application $app) {
+        $controllers->get('/blog/{slug}', function (Application $app) {
             return 'Single';
         });
 
