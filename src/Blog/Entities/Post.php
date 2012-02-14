@@ -1,45 +1,45 @@
 <?php
 
-namespace Blog\Entity;
+namespace Blog\Entities;
 
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity
+ * @Entity
  */
 class Post 
 {
     /** 
-     * @ORM\Id 
-     * @ORM\GeneratedValue 
-     * @ORM\Column(type="integer") 
+     * @Id 
+     * @GeneratedValue 
+     * @Column(type="integer") 
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=128)
+     * @Column(type="string", length=128)
      */
     private $title;
 
     /**
-     * @ORM\Column(type="text")
+     * @Column(type="text")
      */
     private $content;
 
     /**
      * @var datetime $created_at
      *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
+     * @Timestampable(on="create")
+     * @Column(type="datetime")
      */
     private $created_at;
 
     /**
      * @var datetime $updated_at
      *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
+     * @Timestampable(on="update")
+     * @Column(type="datetime")
      */
     private $updated_at;
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace Blog\Tests\Provider;
+namespace Blog\Tests\Providers;
 
 use Silex\Application;
-use Blog\Provider\DoctrineOrmServiceProvider;
+use Blog\Providers\DoctrineOrmServiceProvider;
 
 class DoctrineOrmServiceProviderTest extends \PHPUnit_Framework_TestCase
 {

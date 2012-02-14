@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Tests\Controller;
+namespace Blog\Tests\Controllers;
 
 use Silex\WebTestCase;
 

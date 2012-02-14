@@ -1,9 +1,6 @@
 development:
-  driver:   pdo_mysql
-  host:     localhost
-  dbname:   blog_development
-  user:     root
-  password: password
+  driver: pdo_sqlite
+  path:   database.db
 
 test:
   driver: pdo_sqlite

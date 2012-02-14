@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Controller;
+namespace Blog\Controllers;
 
 use Silex\Application,
     Silex\ControllerCollection,

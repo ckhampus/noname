@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Provider;
+namespace Blog\Providers;
 
 use Silex\Application,
     Silex\ServiceProviderInterface;
@@ -14,8 +14,7 @@ class DoctrineOrmServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['db.config'] = $app->share(function () use ($app) {
-            $entities = $app['db.entities'];
-            return Setup::createAnnotationMetadataConfiguration($entities, $app['debug']);
+            return Setup::createAnnotationMetadataConfiguration($app['db.entities'], $app['debug']);
         });
 
         $app['db.entity_manager'] = $app->share(function () use ($app) {

@@ -8,4 +8,6 @@ define('CONFIG_DIR', ROOT_DIR.'/config');
 define('PUBLIC_DIR', ROOT_DIR.'/public');
 define('VENDOR_DIR', ROOT_DIR.'/vendor');
 
+require APP_DIR.'/functions.php';
+
 return require APP_DIR.'/app.php';

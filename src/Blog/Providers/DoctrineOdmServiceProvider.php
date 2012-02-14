@@ -1,6 +1,6 @@
 <?php
 
-namespace Blog\Provider;
+namespace Blog\Providers;
 
 use Silex\Application,
     Silex\ServiceProviderInterface;
