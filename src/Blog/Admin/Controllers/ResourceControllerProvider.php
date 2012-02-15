@@ -2,6 +2,8 @@
 
 namespace Blog\Admin\Controllers;
 
+use Blog\Admin\Forms\GenericType;
+
 use Silex\Application,
     Silex\ControllerCollection,
     Silex\ControllerProviderInterface;
@@ -10,11 +12,11 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 
 class ResourceControllerProvider implements ControllerProviderInterface 
 {
-    public $metadata;
+    private $metadata;
 
-    public $em;
+    private $em;
 
-    public $form;
+    private $app;
 
     function __construct(ClassMetadata $metadata) {
         $this->metadata = $metadata;
@@ -22,100 +24,130 @@ class ResourceControllerProvider implements ControllerProviderInterface
 
     public function connect(Application $app)
     {
-        $controller = $this;
         $this->em = $app['db.entity_manager'];
-        $this->form = $this->createResourceForm($app, $this->metadata);
+        $this->app = $app;
 
         $resource = underscore($this->metadata->getTableName());
 
         $controllers = new ControllerCollection();
 
         // display a list of all resources
-        $controllers->get("/{$resource}", function (Application $app) {
-            return 'Admin Index';
-        })->bind("{$resource}_index_path");
+        $controllers->get("/{$resource}", array($this, 'indexAction'))->bind("{$resource}_index_path");
 
         // return an HTML form for creating a new resource
-        $controllers->get("/{$resource}/new", function (Application $app) use ($controller) {
-            $class = $controller->metadata->getName();
-            $resource = new $class();
-            
-            $form = $controller->form;
-
-            return $app['twig']->render('new.html.twig', array('form' => $form->createView()));
-        })->bind("new_{$resource}_path");
+        $controllers->get("/{$resource}/new", array($this, 'newAction'))->bind("new_{$resource}_path");
 
         // create a new resource
-        $controllers->post("/{$resource}", function (Application $app) use ($controller) {
-            $class = $controller->metadata->getName();
-            $form = $controller->form;
-            $form->bindRequest($app['request']);
-
-            if ($form->isValid()) {
-                $data = $form->getData();
-
-                var_dump($data);
-
-                return 'hello';
-            }
-        })->bind("save_{$resource}_path");;
+        $controllers->post("/{$resource}", array($this, 'createAction'))->bind("create_{$resource}_path");
 
         // display a specific resource
-        $controllers->get("/{$resource}/{id}", function (Application $app, $id) use ($controller) {
-            /*
-            $em = $app['db.entity_manager'];
-            $resource = $em->find($metadata->getName(), $id);
-            
-            $form = $controller->form;
-
-            return $app['twig']->render('edit.html.twig', array('form' => $form->createView()));
-            */
-        })->bind("show_{$resource}_path");
+        $controllers->get("/{$resource}/{id}", array($this, 'showAction'))->bind("show_{$resource}_path");
 
         // return an HTML form for editing a resource
-        $controllers->get("/{$resource}/{id}/edit", function (Application $app, $id) use ($controller) {
-            $em = $controller->em;
-            $resource = $em->find($metadata->getName(), $id);
-            
-            $form = $controller->form->setData($resource);
-
-            return $app['twig']->render('edit.html.twig', array(
-                'form' => $form->createView(),
-                'resource' => $resource,
-            ));
-        })->bind("edit_{$resource}_path");
+        $controllers->get("/{$resource}/{id}/edit", array($this, 'editAction'))->bind("edit_{$resource}_path");
 
         // update a specific resource
-        $controllers->put("/{$resource}/{id}", function (Application $app, $id) {
-            return 'Admin Index';
-        })->bind("update_{$resource}_path");;
+        $controllers->put("/{$resource}/{id}", array($this, 'updateAction'))->bind("update_{$resource}_path");
 
         // delete a specific resource
-        $controllers->delete("/{$resource}/{id}", function (Application $app, $id) {
-            return 'Admin Index';
-        })->bind("delete_{$resource}_path");;
+        $controllers->delete("/{$resource}/{id}", array($this, 'deleteAction'))->bind("delete_{$resource}_path");
 
         return $controllers;
     }
 
-    private function createResourceForm(Application $app, $metadata)
+    public function indexAction()
     {
-        $fb = $app['form.factory']->createBuilder('form', array(), array('data_class' => $metadata->getName()));
+        return 'index';
+    }
 
-        foreach ($metadata->fieldMappings as $field) {
-            switch ($field['type']) {
-                case 'string':
-                    $type = 'text';
-                    break;
-                
-                default:
-                    $type = $field['type'];
-                    break;
-            }
+    public function newAction()
+    {
+        $class = $this->metadata->getName();
+        $entity = new $class();
 
-            $fb = $fb->add($field['fieldName'], $type);
+        $form = $this->createForm($entity);
+
+        return $this->render('new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView()
+        ));
+    }
+
+    public function createAction()
+    {
+        $class = $this->metadata->getName();
+        $entity = new $class();
+
+        $form = $this->createForm($entity);
+        $form->bindRequest($this->app['request']);
+
+        if ($form->isValid()) {
+            $em = $this->em;
+            $em->persist($entity);
+            $em->flush();
+
+            $resource = underscore($this->metadata->getTableName());
+
+            return $this->redirect($this->generateUrl("show_{$resource}_path", array('id' => $entity->getId())));
         }
 
-        return $fb->getForm();
+        return $this->render('new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView()
+        ));
+    }
+
+    public function showAction($id)
+    {
+        $em = $this->em;
+        $entity = $em->getRepository($this->metadata->getName())->find($id);
+
+        return 'show';
+    }
+
+    public function editAction($id)
+    {
+        $em = $this->em;
+        $entity = $em->getRepository($this->metadata->getName())->find($id);
+
+        return 'edit';
+    }
+
+    public function updateAction($id)
+    {
+        $em = $this->em;
+        $entity = $em->getRepository($this->metadata->getName())->find($id);
+
+        return 'update';
+    }
+
+    public function deleteAction($id)
+    {
+        $em = $this->em;
+        $entity = $em->getRepository($this->metadata->getName())->find($id);
+
+        return 'delete';
+    }
+
+    private function createForm($entity)
+    {
+        $form = $this->app['form.factory']->createBuilder(new GenericType($this->metadata), $entity)->getForm();
+
+        return $form;
+    }
+
+    public function render($name, array $context = array())
+    {
+        return $this->app['twig']->render($name, $context);
+    }
+
+    public function redirect($url, $status = 302)
+    {
+        $this->app->redirect($url, $status);
+    }
+
+    public function generateUrl($name, $parameters = array(), $absolute = false)
+    {
+        $this->app['url_generator']->generate($name, $parameters, $absolute);
     }
 }

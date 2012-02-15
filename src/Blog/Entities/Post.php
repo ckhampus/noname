@@ -43,6 +43,11 @@ class Post
      */
     private $updated_at;
 
+    function __construct() {
+        $this->created_at = new \DateTime();
+        $this->updated_at = new \DateTime();
+    }
+
     /**
      * Get the post id.
      * 
@@ -104,12 +109,28 @@ class Post
     }
 
     /**
-     * Get the date and time this post was last updated.
+     * Set the date and time this post was created.
      * 
      * @return DateTime
+     */
+    public function setCreatedAt(\DateTime $value)
+    {
+        $this->created_at = $value;
+    }
+
+    /**
+     * Get the date and time this post was last updated.
      */
     public function getUpdatedAt()
     {
         return $this->updated_at;
+    }
+
+    /**
+     * Set the date and time this post was created.
+     */
+    public function setUpdatedAt(\DateTime $value)
+    {
+        $this->updated_at = $value;
     }
 }

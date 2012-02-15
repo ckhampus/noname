@@ -40,7 +40,10 @@ class FormServiceProvider implements ServiceProviderInterface
 
             
             if (isset($app['db'])) {
-                $registry = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension(new \Blog\Registry($app['db'], $app['db.entity_manager']));
+                $registry = new \Blog\Registry($app['db'], $app['db.entity_manager']);
+                //var_dump($registry->getConnections());
+
+                $extensions[] = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
             }
 
 
