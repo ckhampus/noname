@@ -4,10 +4,6 @@ namespace Blog\Admin\Controllers;
 
 use Blog\Controllers\Controller;
 
-use Silex\Application,
-    Silex\ControllerCollection,
-    Silex\ControllerProviderInterface;
-
 use Doctrine\ORM\Mapping\ClassMetadata;
 
 class ResourceController extends Controller
@@ -46,7 +42,10 @@ class ResourceController extends Controller
 
     public function indexAction()
     {
-        return 'index';
+        $em = $this->getEntityManager();
+        $entities = $em->getRepository($this->metadata->getName())->findAll();
+
+        return "Resources: " . count($entities);
     }
 
     public function newAction()
@@ -68,10 +67,10 @@ class ResourceController extends Controller
         $entity = new $class();
 
         $form = $this->createForm($entity);
-        $form->bindRequest($this->app['request']);
+        $form->bindRequest($this->getRequest());
 
         if ($form->isValid()) {
-            $em = $this->em;
+            $em = $this->getEntityManager();
             $em->persist($entity);
             $em->flush();
 
@@ -96,7 +95,7 @@ class ResourceController extends Controller
 
     public function editAction($id)
     {
-        $em = $this->em;
+        $em = $this->getEntityManager();
         $entity = $em->getRepository($this->metadata->getName())->find($id);
 
         return 'edit';
@@ -126,7 +125,9 @@ class ResourceController extends Controller
      */
     private function createForm($entity)
     {
-        $builder = $this->app['form.factory']->createBuilder('form', $entity);
+        $app = $this->getApplication();
+
+        $builder = $app['form.factory']->createBuilder('form', $entity);
         
         $class = $this->metadata->getReflectionClass();
 

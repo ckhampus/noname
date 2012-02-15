@@ -3,6 +3,8 @@
 namespace Blog;
 
 use Blog\Controllers\BlogController,
+    Blog\Admin\Controllers\DashboardController,
+    Blog\Admin\Controllers\DatabaseController,
     Blog\Admin\Controllers\ResourceController,
     Blog\Providers\DoctrineOrmServiceProvider,
     Blog\Providers\FormServiceProvider;
@@ -49,29 +51,38 @@ class Application extends \Silex\Application
             'db.entities' => array(APP_DIR.'/Blog/Entities'),
         ));
 
+        // Register twig service provider.
         $app->register(new TwigServiceProvider(), array(
             'twig.path' => array(ROOT_DIR.'/admin/views', ROOT_DIR.'/themes/default'),
         ));
 
+        // Register url service provider.
         $app->register(new UrlGeneratorServiceProvider());
 
+        // Register symfony bridges provider.
         $this->register(new SymfonyBridgesServiceProvider());
 
+        // Register translation provider.
         $this->register(new TranslationServiceProvider(), array(
             'translator.messages' => array()
         ));
 
+        // Register form service provider.
         $this->register(new FormServiceProvider());
         
-        $ff = $this['form.factory'];
-
-        $this->createDatabaseSchema();
-
+        // Mount blog controller under root.
         $this->mount('/', new BlogController());
+
+        // Mount admin dashboard under admin root.
+        $this->mount('/admin', new DashboardController());
+
+        // Mount database admin under admin root.
+        $this->mount('/admin', new DatabaseController());
 
         $em = $this['db.entity_manager'];
         $classes = $em->getMetadataFactory()->getAllMetadata();
 
+        // Mount all resources under admin root.
         foreach ($classes as $class) {
             $this->mount('/admin', new ResourceController($class));
         }
@@ -101,22 +112,6 @@ class Application extends \Silex\Application
         }
 
         $this['config'] = $config;
-    }
-
-    public function createRewriteRules()
-    {
-        $dumper = new Routing\Matcher\Dumper\ApacheMatcherDumper($this['routes']);
- 
-        $rules = $dumper->dump(array(
-            'script_name' => 'index.php',
-            'base_uri'    => '/projects/blog/public',
-        ));
-
-        var_dump($rules);
-
-        if (!file_exists(PUBLIC_DIR.'/.htaccess')) {
-            file_put_contents(PUBLIC_DIR.'/.htaccess', $rules);
-        }
     }
 
     private function createDatabaseSchema()

@@ -111,6 +111,11 @@ abstract class Controller implements ControllerProviderInterface
         return $this->app['db.entity_manager'];
     }
 
+    public function getRequest()
+    {
+        return $this->app['request'];
+    }
+
     /**
      * Returns a rendered view.
      *
