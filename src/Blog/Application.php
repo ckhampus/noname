@@ -2,8 +2,8 @@
 
 namespace Blog;
 
-use Blog\Controllers\BlogControllerProvider,
-    Blog\Admin\Controllers\ResourceControllerProvider,
+use Blog\Controllers\BlogController,
+    Blog\Admin\Controllers\ResourceController,
     Blog\Providers\DoctrineOrmServiceProvider,
     Blog\Providers\FormServiceProvider;
 
@@ -50,7 +50,7 @@ class Application extends \Silex\Application
         ));
 
         $app->register(new TwigServiceProvider(), array(
-            'twig.path' => ROOT_DIR.'/admin/views',
+            'twig.path' => array(ROOT_DIR.'/admin/views', ROOT_DIR.'/themes/default'),
         ));
 
         $app->register(new UrlGeneratorServiceProvider());
@@ -67,13 +67,13 @@ class Application extends \Silex\Application
 
         $this->createDatabaseSchema();
 
-        $this->mount('/', new BlogControllerProvider());
+        $this->mount('/', new BlogController());
 
         $em = $this['db.entity_manager'];
         $classes = $em->getMetadataFactory()->getAllMetadata();
 
         foreach ($classes as $class) {
-            $this->mount('/admin', new ResourceControllerProvider($class));
+            $this->mount('/admin', new ResourceController($class));
         }
     }
 

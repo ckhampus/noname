@@ -2,7 +2,7 @@
 
 namespace Blog\Admin\Controllers;
 
-use Blog\Admin\Forms\GenericType;
+use Blog\Controllers\Controller;
 
 use Silex\Application,
     Silex\ControllerCollection,
@@ -10,49 +10,38 @@ use Silex\Application,
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 
-class ResourceControllerProvider implements ControllerProviderInterface 
+class ResourceController extends Controller
 {
     private $metadata;
-
-    private $em;
-
-    private $app;
 
     function __construct(ClassMetadata $metadata) {
         $this->metadata = $metadata;
     }
 
-    public function connect(Application $app)
+    public function defineRoutes()
     {
-        $this->em = $app['db.entity_manager'];
-        $this->app = $app;
-
         $resource = underscore($this->metadata->getTableName());
 
-        $controllers = new ControllerCollection();
-
         // display a list of all resources
-        $controllers->get("/{$resource}", array($this, 'indexAction'))->bind("{$resource}_index_path");
+        $this->get("/{$resource}", array($this, 'indexAction'))->bind("{$resource}_index_path");
 
         // return an HTML form for creating a new resource
-        $controllers->get("/{$resource}/new", array($this, 'newAction'))->bind("new_{$resource}_path");
+        $this->get("/{$resource}/new", array($this, 'newAction'))->bind("new_{$resource}_path");
 
         // create a new resource
-        $controllers->post("/{$resource}", array($this, 'createAction'))->bind("create_{$resource}_path");
+        $this->post("/{$resource}", array($this, 'createAction'))->bind("create_{$resource}_path");
 
         // display a specific resource
-        $controllers->get("/{$resource}/{id}", array($this, 'showAction'))->bind("show_{$resource}_path");
+        $this->get("/{$resource}/{id}", array($this, 'showAction'))->bind("show_{$resource}_path");
 
         // return an HTML form for editing a resource
-        $controllers->get("/{$resource}/{id}/edit", array($this, 'editAction'))->bind("edit_{$resource}_path");
+        $this->get("/{$resource}/{id}/edit", array($this, 'editAction'))->bind("edit_{$resource}_path");
 
         // update a specific resource
-        $controllers->put("/{$resource}/{id}", array($this, 'updateAction'))->bind("update_{$resource}_path");
+        $this->put("/{$resource}/{id}", array($this, 'updateAction'))->bind("update_{$resource}_path");
 
         // delete a specific resource
-        $controllers->delete("/{$resource}/{id}", array($this, 'deleteAction'))->bind("delete_{$resource}_path");
-
-        return $controllers;
+        $this->delete("/{$resource}/{id}", array($this, 'deleteAction'))->bind("delete_{$resource}_path");
     }
 
     public function indexAction()
@@ -99,10 +88,10 @@ class ResourceControllerProvider implements ControllerProviderInterface
 
     public function showAction($id)
     {
-        $em = $this->em;
+        $em = $this->getEntityManager();
         $entity = $em->getRepository($this->metadata->getName())->find($id);
 
-        return 'show';
+        return "Resource: {$id}";
     }
 
     public function editAction($id)
@@ -115,7 +104,7 @@ class ResourceControllerProvider implements ControllerProviderInterface
 
     public function updateAction($id)
     {
-        $em = $this->em;
+        $em = $this->getEntityManager();
         $entity = $em->getRepository($this->metadata->getName())->find($id);
 
         return 'update';
@@ -123,31 +112,32 @@ class ResourceControllerProvider implements ControllerProviderInterface
 
     public function deleteAction($id)
     {
-        $em = $this->em;
+        $em = $this->getEntityManager();
         $entity = $em->getRepository($this->metadata->getName())->find($id);
 
         return 'delete';
     }
 
+    /**
+     * Create a basic form for the resource.
+     * 
+     * @param object $entity 
+     * @return Form  The entity form
+     */
     private function createForm($entity)
     {
-        $form = $this->app['form.factory']->createBuilder(new GenericType($this->metadata), $entity)->getForm();
+        $builder = $this->app['form.factory']->createBuilder('form', $entity);
+        
+        $class = $this->metadata->getReflectionClass();
 
-        return $form;
-    }
+        foreach ($this->metadata->getFieldNames() as $field) {
+            $setter = 'set'.str_replace(' ', '', ucwords(str_replace('_', ' ', $field)));
 
-    public function render($name, array $context = array())
-    {
-        return $this->app['twig']->render($name, $context);
-    }
+            if ($class->hasMethod($setter)) {
+                $builder->add($field);
+            }
+        }
 
-    public function redirect($url, $status = 302)
-    {
-        $this->app->redirect($url, $status);
-    }
-
-    public function generateUrl($name, $parameters = array(), $absolute = false)
-    {
-        $this->app['url_generator']->generate($name, $parameters, $absolute);
+        return $builder->getForm();
     }
 }

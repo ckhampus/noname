@@ -111,7 +111,7 @@ class Post
     /**
      * Set the date and time this post was created.
      * 
-     * @return DateTime
+     * @param $value The new post creation date.
      */
     public function setCreatedAt(\DateTime $value)
     {
@@ -124,13 +124,5 @@ class Post
     public function getUpdatedAt()
     {
         return $this->updated_at;
-    }
-
-    /**
-     * Set the date and time this post was created.
-     */
-    public function setUpdatedAt(\DateTime $value)
-    {
-        $this->updated_at = $value;
     }
 }

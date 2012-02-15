@@ -11,6 +11,8 @@
 
 namespace Blog\Providers;
 
+use Blog\ManagerRegistry;
+
 use Silex\Application,
     Silex\ServiceProviderInterface;
 
@@ -40,7 +42,7 @@ class FormServiceProvider implements ServiceProviderInterface
 
             
             if (isset($app['db'])) {
-                $registry = new \Blog\Registry($app['db'], $app['db.entity_manager']);
+                $registry = new ManagerRegistry($app['db'], $app['db.entity_manager']);
                 //var_dump($registry->getConnections());
 
                 $extensions[] = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
