@@ -4,12 +4,12 @@ namespace Blog\Tests\Controllers;
 
 use Silex\WebTestCase;
 
-class BlogControllerProviderTest extends WebTestCase
+class BlogController extends WebTestCase
 {
     public function createApplication()
     {
         $app = require APP_DIR.'/app.php';
-        $app['debug'] = true;
+        $app['environment'] = 'test';
         unset($app['exception_handler']);
 
         return $app;
