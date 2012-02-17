@@ -1,0 +1,7 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+  <form action="{{ path(create_resource_path) }}" method="post" {{ form_enctype(form) }}>
+    {% include 'form.html.twig' %}
+  </form>
+{% endblock %}

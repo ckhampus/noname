@@ -1,0 +1,7 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+  <form action="{{ path(update_resource_path, {id: entity.id}) }}" method="put" {{ form_enctype(form) }}>
+    {% include 'form.html.twig' %}
+  </form>
+{% endblock %}

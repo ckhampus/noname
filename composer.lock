@@ -1,96 +1,104 @@
 {
-    "hash": "64a3cd04ef7817c874eefe5b76c7faca",
+    "hash": "ec253da639163e58ea39c25662864cc9",
     "packages": [
         {
-            "package": "symfony\/locale",
+            "package": "symfony/locale",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/validator",
+            "package": "symfony/validator",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/class-loader",
+            "package": "symfony/class-loader",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/css-selector",
+            "package": "symfony/css-selector",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/event-dispatcher",
+            "package": "symfony/event-dispatcher",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/http-foundation",
+            "package": "symfony/http-foundation",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/http-kernel",
+            "package": "symfony/http-kernel",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/routing",
+            "package": "symfony/routing",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/dom-crawler",
+            "package": "symfony/dom-crawler",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/yaml",
+            "package": "symfony/process",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/finder",
+            "package": "symfony/yaml",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/form",
+            "package": "symfony/finder",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/translation",
+            "package": "symfony/form",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/twig-bridge",
+            "package": "symfony/translation",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/doctrine-bridge",
+            "package": "symfony/twig-bridge",
             "version": "2.1.0-dev"
         },
         {
-            "package": "symfony\/browser-kit",
+            "package": "symfony/doctrine-bridge",
             "version": "2.1.0-dev"
         },
         {
-            "package": "doctrine\/common",
+            "package": "symfony/browser-kit",
+            "version": "2.1.0-dev"
+        },
+        {
+            "package": "doctrine/common",
             "version": "2.2.0"
         },
         {
-            "package": "doctrine\/dbal",
+            "package": "doctrine/dbal",
             "version": "2.2.1"
         },
         {
-            "package": "pimple\/pimple",
+            "package": "pimple/pimple",
             "version": "1.0.0-dev"
         },
         {
-            "package": "gedmo\/doctrine-extensions",
+            "package": "gedmo/doctrine-extensions",
             "version": "v2.2.0"
         },
         {
-            "package": "doctrine\/orm",
+            "package": "doctrine/orm",
             "version": "2.2.0"
         },
         {
-            "package": "twig\/twig",
+            "package": "kriswallsmith/assetic",
+            "version": "1.1.0-dev"
+        },
+        {
+            "package": "twig/twig",
             "version": "1.6.0"
         },
         {
-            "package": "silex\/silex",
+            "package": "silex/silex",
             "version": "1.0.0-dev"
         }
     ]

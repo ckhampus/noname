@@ -1,0 +1,9 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+  <ol>
+  {% for entity in entities %}
+    <li><a href="{{ path(show_resource_path, {id: entity.id}) }}">{{ entity.title }}</a> - <a href="{{ path(edit_resource_path, {id: entity.id}) }}">Edit</a></li>
+  {% endfor %}
+  </ol>
+{% endblock %}

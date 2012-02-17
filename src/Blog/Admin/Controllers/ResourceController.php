@@ -44,18 +44,25 @@ class ResourceController extends Controller
     {
         $em = $this->getEntityManager();
         $entities = $em->getRepository($this->metadata->getName())->findAll();
+        $resource = underscore($this->metadata->getTableName());
 
-        return "Resources: " . count($entities);
+        return $this->render('resource/index.html.twig', array(
+            'show_resource_path' => "show_{$resource}_path",
+            'edit_resource_path' => "edit_{$resource}_path",
+            'entities' => $entities,
+        ));
     }
 
     public function newAction()
     {
         $class = $this->metadata->getName();
         $entity = new $class();
+        $resource = underscore($this->metadata->getTableName());
 
         $form = $this->createForm($entity);
 
-        return $this->render('new.html.twig', array(
+        return $this->render('resource/new.html.twig', array(
+            'create_resource_path' => "create_{$resource}_path",
             'entity' => $entity,
             'form'   => $form->createView()
         ));
@@ -79,7 +86,7 @@ class ResourceController extends Controller
             return $this->redirect($this->generateUrl("show_{$resource}_path", array('id' => $entity->getId())));
         }
 
-        return $this->render('new.html.twig', array(
+        return $this->render('resource/new.html.twig', array(
             'entity' => $entity,
             'form'   => $form->createView()
         ));
@@ -97,8 +104,15 @@ class ResourceController extends Controller
     {
         $em = $this->getEntityManager();
         $entity = $em->getRepository($this->metadata->getName())->find($id);
+        $resource = underscore($this->metadata->getTableName());
 
-        return 'edit';
+        $form = $this->createForm($entity);
+
+        return $this->render('resource/edit.html.twig', array(
+            'update_resource_path' => "update_{$resource}_path",
+            'entity' => $entity,
+            'form'   => $form->createView()
+        ));
     }
 
     public function updateAction($id)
@@ -106,7 +120,21 @@ class ResourceController extends Controller
         $em = $this->getEntityManager();
         $entity = $em->getRepository($this->metadata->getName())->find($id);
 
-        return 'update';
+        if ($form->isValid()) {
+            $em = $this->getEntityManager();
+            $em->persist($entity);
+            $em->flush();
+
+            $resource = underscore($this->metadata->getTableName());
+
+            return $this->redirect($this->generateUrl("show_{$resource}_path", array('id' => $entity->getId())));
+        }
+
+        return $this->render('resource/edit.html.twig', array(
+            'update_resource_path' => "update_{$resource}_path",
+            'entity' => $entity,
+            'form'   => $form->createView()
+        )); 
     }
 
     public function deleteAction($id)

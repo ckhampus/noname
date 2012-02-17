@@ -10,6 +10,7 @@
     "twig/twig": "1.6.0",
     "symfony/twig-bridge": "2.1.0-dev",
     "symfony/doctrine-bridge": "2.1.0-dev",
+    "kriswallsmith/assetic": "1.1.0-dev",
     "doctrine/orm": "2.2.0",
     "gedmo/doctrine-extensions": "2.2.0"
   },
