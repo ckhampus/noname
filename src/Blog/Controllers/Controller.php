@@ -19,12 +19,13 @@ abstract class Controller implements ControllerProviderInterface
         $this->app = $app;
         $this->controllers = new ControllerCollection();
         $this->defineRoutes();
+
         return $this->controllers;
     }
 
     /**
      * Defines routes for the controller.
-     * 
+     *
      * @return Silex\ControllerCollection
      */
     abstract public function defineRoutes();
@@ -35,8 +36,8 @@ abstract class Controller implements ControllerProviderInterface
      * You can optionally specify HTTP methods that should be matched.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
-     * 
+     * @param mixed  $to      Callback that returns the response when matched
+     *
      * @return Silex\Controller
      */
     public function match($pattern, $to)
@@ -48,8 +49,8 @@ abstract class Controller implements ControllerProviderInterface
      * Maps a GET request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
-     * 
+     * @param mixed  $to      Callback that returns the response when matched
+     *
      * @return Silex\Controller
      */
     public function get($pattern, $to)
@@ -61,8 +62,8 @@ abstract class Controller implements ControllerProviderInterface
      * Maps a POST request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
-     * 
+     * @param mixed  $to      Callback that returns the response when matched
+     *
      * @return Silex\Controller
      */
     public function post($pattern, $to)
@@ -74,8 +75,8 @@ abstract class Controller implements ControllerProviderInterface
      * Maps a PUT request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
-     * 
+     * @param mixed  $to      Callback that returns the response when matched
+     *
      * @return Silex\Controller
      */
     public function put($pattern, $to)
@@ -87,8 +88,8 @@ abstract class Controller implements ControllerProviderInterface
      * Maps a DELETE request to a callable.
      *
      * @param string $pattern Matched route pattern
-     * @param mixed $to Callback that returns the response when matched
-     * 
+     * @param mixed  $to      Callback that returns the response when matched
+     *
      * @return Silex\Controller
      */
     public function delete($pattern, $to)
@@ -98,7 +99,7 @@ abstract class Controller implements ControllerProviderInterface
 
     /**
      * Returns the application instance.
-     * 
+     *
      * @return Blog\Application
      */
     public function getApplication()
@@ -119,10 +120,10 @@ abstract class Controller implements ControllerProviderInterface
     /**
      * Returns a rendered view.
      *
-     * @param string   $view The view name
-     * @param array    $parameters An array of parameters to pass to the view
+     * @param string $view       The view name
+     * @param array  $parameters An array of parameters to pass to the view
      *
-     * @return string  The renderer view
+     * @return string The renderer view
      */
     public function render($name, array $context = array())
     {
@@ -132,7 +133,7 @@ abstract class Controller implements ControllerProviderInterface
     /**
      * Returns a RedirectResponse to the given URL.
      *
-     * @param string  $url The URL to redirect to
+     * @param string  $url    The URL to redirect to
      * @param integer $status The status code to use for the Response
      *
      * @return RedirectResponse
@@ -159,6 +160,7 @@ abstract class Controller implements ControllerProviderInterface
     private function createFormBuilder($data)
     {
         $builder = $this->app['form.factory']->createBuilder('form', $data);
+
         return $builder;
     }
 }

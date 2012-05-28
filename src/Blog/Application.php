@@ -5,9 +5,11 @@ namespace Blog;
 use Blog\Controllers\BlogController,
     Blog\Admin\Controllers\DashboardController,
     Blog\Admin\Controllers\DatabaseController,
+    Blog\Admin\Controllers\AssetController,
     Blog\Admin\Controllers\ResourceController,
     Blog\Providers\DoctrineOrmServiceProvider,
-    Blog\Providers\FormServiceProvider;
+    Blog\Providers\FormServiceProvider,
+    Blog\RequestListener;
 
 use Symfony\Component\Yaml\Yaml,
     Symfony\Component\Routing,
@@ -20,7 +22,8 @@ use Silex\Provider\SymfonyBridgesServiceProvider,
 
 class Application extends \Silex\Application
 {
-    function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         $app = $this;
@@ -67,9 +70,11 @@ class Application extends \Silex\Application
             'translator.messages' => array()
         ));
 
+        $this['dispatcher']->addSubscriber(new RequestListener());
+
         // Register form service provider.
         $this->register(new FormServiceProvider());
-        
+
         // Mount blog controller under root.
         $this->mount('/', new BlogController());
 
@@ -78,6 +83,9 @@ class Application extends \Silex\Application
 
         // Mount database admin under admin root.
         $this->mount('/admin', new DatabaseController());
+
+        // Mount database admin under admin root.
+        $this->mount('/admin', new AssetController(ROOT_DIR.'/admin/assets'));
 
         $em = $this['db.entity_manager'];
         $classes = $em->getMetadataFactory()->getAllMetadata();

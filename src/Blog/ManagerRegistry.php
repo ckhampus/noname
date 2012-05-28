@@ -5,13 +5,14 @@ namespace Blog;
 use Doctrine\Common\Persistence\ManagerRegistry as ManagerRegistryInterface,
     Doctrine\ORM\ORMException;
 
-class ManagerRegistry implements ManagerRegistryInterface 
+class ManagerRegistry implements ManagerRegistryInterface
 {
     private $name;
     private $connections;
     private $managers;
 
-    function __construct($connection, $manager) {
+    public function __construct($connection, $manager)
+    {
       $this->connections = array('default' => $connection);
       $this->managers = array('default' => $manager);
     }

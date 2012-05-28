@@ -6,11 +6,16 @@ use Blog\Controllers\Controller;
 
 use Doctrine\ORM\Mapping\ClassMetadata;
 
+/**
+ * This is a general controller for cases
+ * where there doesn't exist a specialized one.
+ */
 class ResourceController extends Controller
 {
     private $metadata;
 
-    function __construct(ClassMetadata $metadata) {
+    public function __construct(ClassMetadata $metadata)
+    {
         $this->metadata = $metadata;
     }
 
@@ -134,7 +139,7 @@ class ResourceController extends Controller
             'update_resource_path' => "update_{$resource}_path",
             'entity' => $entity,
             'form'   => $form->createView()
-        )); 
+        ));
     }
 
     public function deleteAction($id)
@@ -147,16 +152,16 @@ class ResourceController extends Controller
 
     /**
      * Create a basic form for the resource.
-     * 
-     * @param object $entity 
-     * @return Form  The entity form
+     *
+     * @param  object $entity
+     * @return Form   The entity form
      */
     private function createForm($entity)
     {
         $app = $this->getApplication();
 
         $builder = $app['form.factory']->createBuilder('form', $entity);
-        
+
         $class = $this->metadata->getReflectionClass();
 
         foreach ($this->metadata->getFieldNames() as $field) {

@@ -9,7 +9,7 @@ use Doctrine\ORM\Tools\Setup,
     Doctrine\ORM\EntityManager,
     Doctrine\ORM\Tools\SchemaTool;
 
-class DoctrineOrmServiceProvider implements ServiceProviderInterface 
+class DoctrineOrmServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {

@@ -40,14 +40,11 @@ class FormServiceProvider implements ServiceProviderInterface
                 new CsrfExtension($app['form.csrf_provider']),
             );
 
-            
+
             if (isset($app['db'])) {
                 $registry = new ManagerRegistry($app['db'], $app['db.entity_manager']);
-                //var_dump($registry->getConnections());
-
                 $extensions[] = new \Symfony\Bridge\Doctrine\Form\DoctrineOrmExtension($registry);
             }
-
 
             if (isset($app['validator'])) {
                 $extensions[] = new ValidatorExtension($app['validator']);

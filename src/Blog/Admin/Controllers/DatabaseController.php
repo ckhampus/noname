@@ -27,7 +27,7 @@ class DatabaseController extends Controller
         $st = $this->getSchemaTool();
         $sv = $this->getSchemaValidator();
         $classes = $em->getMetadataFactory()->getAllMetadata();
-        
+
         $result = $sv->validateMapping();
 
         if (empty($result)) {

@@ -2,18 +2,16 @@
 
 namespace Blog\Entities;
 
-use Gedmo\Mapping\Annotation as Gedmo;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Entity
  */
-class Post 
+class Post
 {
-    /** 
-     * @Id 
-     * @GeneratedValue 
-     * @Column(type="integer") 
+    /**
+     * @Id
+     * @GeneratedValue
+     * @Column(type="integer")
      */
     private $id;
 
@@ -43,14 +41,15 @@ class Post
      */
     private $updated_at;
 
-    function __construct() {
+    public function __construct()
+    {
         $this->created_at = new \DateTime();
         $this->updated_at = new \DateTime();
     }
 
     /**
      * Get the post id.
-     * 
+     *
      * @return int The post id.
      */
     public function getId()
@@ -60,7 +59,7 @@ class Post
 
     /**
      * Get the post title.
-     * 
+     *
      * @return string The post title.
      */
     public function getTitle()
@@ -70,7 +69,7 @@ class Post
 
     /**
      * Set the post title.
-     * 
+     *
      * @param $value The new post title.
      */
     public function setTitle($value)
@@ -80,7 +79,7 @@ class Post
 
     /**
      * Get the post content.
-     * 
+     *
      * @return string The post content.
      */
     public function getContent()
@@ -90,7 +89,7 @@ class Post
 
     /**
      * Set the post content.
-     * 
+     *
      * @param $value The new post content.
      */
     public function setContent($value)
@@ -100,7 +99,7 @@ class Post
 
     /**
      * Get the date and time this post was created.
-     * 
+     *
      * @return DateTime
      */
     public function getCreatedAt()
@@ -110,7 +109,7 @@ class Post
 
     /**
      * Set the date and time this post was created.
-     * 
+     *
      * @param $value The new post creation date.
      */
     public function setCreatedAt(\DateTime $value)
