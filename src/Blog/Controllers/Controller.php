@@ -17,7 +17,7 @@ abstract class Controller implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $this->app = $app;
-        $this->controllers = new ControllerCollection();
+        $this->controllers = $app['controllers_factory'];
         $this->defineRoutes();
 
         return $this->controllers;

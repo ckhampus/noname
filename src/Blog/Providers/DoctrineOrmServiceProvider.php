@@ -45,4 +45,9 @@ class DoctrineOrmServiceProvider implements ServiceProviderInterface
             $app['autoloader']->registerNamespace('Doctrine\\Common', $app['db.common.class_path']);
         }
     }
+
+    public function boot(Application $app)
+    {
+
+    }
 }

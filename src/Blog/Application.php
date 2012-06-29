@@ -62,9 +62,6 @@ class Application extends \Silex\Application
         // Register url service provider.
         $app->register(new UrlGeneratorServiceProvider());
 
-        // Register symfony bridges provider.
-        $this->register(new SymfonyBridgesServiceProvider());
-
         // Register translation provider.
         $this->register(new TranslationServiceProvider(), array(
             'translator.messages' => array()

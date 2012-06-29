@@ -13,15 +13,14 @@ namespace Blog\Providers;
 
 use Blog\ManagerRegistry;
 
-use Silex\Application,
-    Silex\ServiceProviderInterface;
-
-use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider,
-    Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider,
-    Symfony\Component\Form\FormFactory,
-    Symfony\Component\Form\Extension\Core\CoreExtension,
-    Symfony\Component\Form\Extension\Validator\ValidatorExtension,
-    Symfony\Component\Form\Extension\Csrf\CsrfExtension;
+use Silex\Application;
+use Silex\ServiceProviderInterface;
+use Symfony\Component\Form\Extension\Csrf\CsrfProvider\DefaultCsrfProvider;
+use Symfony\Component\Form\Extension\Csrf\CsrfProvider\SessionCsrfProvider;
+use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\Extension\Core\CoreExtension;
+use Symfony\Component\Form\Extension\Validator\ValidatorExtension as FormValidatorExtension;
+use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
 
 /**
  * Symfony Form component Provider.
@@ -32,14 +31,28 @@ class FormServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
+        if (!class_exists('Locale') && !class_exists('Symfony\Component\Locale\Stub\StubLocale')) {
+            throw new \RuntimeException('You must either install the PHP intl extension or the Symfony Locale Component to use the Form extension.');
+        }
+
+        if (!class_exists('Locale')) {
+            $r = new \ReflectionClass('Symfony\Component\Locale\Stub\StubLocale');
+            $path = dirname(dirname($r->getFilename())).'/Resources/stubs';
+
+            require_once $path.'/functions.php';
+            require_once $path.'/Collator.php';
+            require_once $path.'/IntlDateFormatter.php';
+            require_once $path.'/Locale.php';
+            require_once $path.'/NumberFormatter.php';
+        }
+
         $app['form.secret'] = md5(__DIR__);
 
-        $app['form.factory'] = $app->share(function () use ($app) {
+        $app['form.extensions'] = $app->share(function () use ($app) {
             $extensions = array(
                 new CoreExtension(),
                 new CsrfExtension($app['form.csrf_provider']),
             );
-
 
             if (isset($app['db'])) {
                 $registry = new ManagerRegistry($app['db'], $app['db.entity_manager']);
@@ -47,10 +60,19 @@ class FormServiceProvider implements ServiceProviderInterface
             }
 
             if (isset($app['validator'])) {
-                $extensions[] = new ValidatorExtension($app['validator']);
+                $extensions[] = new FormValidatorExtension($app['validator']);
+
+                if (isset($app['translator'])) {
+                    $r = new \ReflectionClass('Symfony\Component\Form\Form');
+                    $app['translator']->addResource('xliff', dirname($r->getFilename()).'/Resources/translations/validators.'.$app['locale'].'.xlf', $app['locale'], 'validators');
+                }
             }
 
-            return new FormFactory($extensions);
+            return $extensions;
+        });
+
+        $app['form.factory'] = $app->share(function () use ($app) {
+            return new FormFactory($app['form.extensions']);
         });
 
         $app['form.csrf_provider'] = $app->share(function () use ($app) {
@@ -60,9 +82,13 @@ class FormServiceProvider implements ServiceProviderInterface
 
             return new DefaultCsrfProvider($app['form.secret']);
         });
+    }
 
+    public function boot(Application $app)
+    {
+        // BC: to be removed before 1.0
         if (isset($app['form.class_path'])) {
-            $app['autoloader']->registerNamespace('Symfony\\Component\\Form', $app['form.class_path']);
+            throw new \RuntimeException('You have provided the form.class_path parameter. The autoloader has been removed from Silex. It is recommended that you use Composer to manage your dependencies and handle your autoloading. If you are already using Composer, you can remove the parameter. See http://getcomposer.org for more information.');
         }
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Blog\Entities;
 
-
 /**
  * @Entity
  */

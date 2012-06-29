@@ -34,7 +34,6 @@ class DatabaseController extends Controller
             $st->createSchema($classes);
         }
 
-
         return 'Database created';
     }
 

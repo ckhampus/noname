@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__.'/../vendor/.composer/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
 define('APP_DIR', __DIR__);
 define('ROOT_DIR', realpath(APP_DIR.'/../'));

@@ -27,7 +27,6 @@ class AssetController extends Controller
 
         $this->am = new AssetManager();
 
-
         foreach ($this->folders as $path) {
             $finder = new Finder();
 
